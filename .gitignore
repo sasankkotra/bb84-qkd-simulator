@@ -22,17 +22,26 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
-.venv/
+
+# PyInstaller files
+*.manifest
+*.spec
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Virtual environments
 venv/
 ENV/
 env/
+.venv
 
 # Node
 node_modules/
 npm-debug.log
 yarn-error.log
-dist/
-.next/
 
 # IDE
 .vscode/
@@ -40,7 +49,6 @@ dist/
 *.swp
 *.swo
 *~
-.DS_Store
 
 # Environment
 .env
@@ -58,3 +66,18 @@ Thumbs.db
 # React
 bb84-react-frontend/dist/
 bb84-react-frontend/node_modules/
+
+# Project outputs (optional - comment out to track)
+outputs/graphs/*
+outputs/reports/*
+outputs/logs/*
+outputs/csv/*
+
+# Environment
+.env
+.env.local
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb
+>>>>>>> 7e66a00ab4e91b7f5eb42114656bf0f072e936a9
