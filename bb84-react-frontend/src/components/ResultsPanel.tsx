@@ -1,6 +1,7 @@
 import React from 'react'
 import { useSimulationStore } from '../store/simulation'
 import { Card, Title, Text, Metric, Badge } from '@tremor/react'
+import { analyzeQber } from '../utils/qberAnalysis'
 
 export const ResultsPanel: React.FC = () => {
   const {
@@ -13,15 +14,25 @@ export const ResultsPanel: React.FC = () => {
     errorCount,
   } = useSimulationStore()
 
-  const statusText = securityStatus || 'PENDING'
+  const qberAnalysis = analyzeQber(qber)
+  
+  const colorMap = {
+    green: 'emerald',
+    yellow: 'yellow',
+    orange: 'orange',
+    red: 'rose',
+  } as const
 
   return (
     <Card className="space-y-4">
       <Title>Simulation Results</Title>
 
-      <div className="flex items-center justify-between">
-        <Metric>{statusText}</Metric>
-        <Badge color={qber && qber > 11 ? 'red' : 'green'} text={qber && qber > 11 ? 'Compromised' : 'Secure'} />
+      <div className="space-y-3">
+        <div className="flex items-center justify-between">
+          <Title className="text-lg">{qberAnalysis.status}</Title>
+          <Badge color={colorMap[qberAnalysis.color]} text={qberAnalysis.level.toUpperCase()} />
+        </div>
+        <Text className="text-sm italic">{qberAnalysis.description}</Text>
       </div>
 
       <div className="grid grid-cols-2 gap-4">

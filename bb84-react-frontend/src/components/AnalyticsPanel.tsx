@@ -1,7 +1,8 @@
 import React from 'react'
 import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 import { useSimulationStore } from '../store/simulation'
-import { Card, Title, Text, Metric } from '@tremor/react'
+import { Card, Title, Text, Metric, Badge } from '@tremor/react'
+import { analyzeQber } from '../utils/qberAnalysis'
 
 const COLORS = {
   secure: '#16A34A',
@@ -13,6 +14,14 @@ const COLORS = {
 
 export const AnalyticsPanel: React.FC = () => {
   const { qber, matched, total, errorCount } = useSimulationStore()
+  const qberAnalysis = analyzeQber(qber)
+  
+  const colorMap = {
+    green: 'emerald',
+    yellow: 'yellow',
+    orange: 'orange',
+    red: 'rose',
+  } as const
 
   if (qber === null) {
     return (
@@ -69,8 +78,11 @@ export const AnalyticsPanel: React.FC = () => {
           <Metric>{errorCount || 0}</Metric>
         </Card>
         <Card>
-          <Title>Detection</Title>
-          <Metric>{qber > 11 ? 'ALERT' : 'SECURE'}</Metric>
+          <Title>Security Status</Title>
+          <div className="flex items-center justify-between mt-2">
+            <Text className="font-semibold text-sm">{qberAnalysis.status}</Text>
+            <Badge color={colorMap[qberAnalysis.color]} text={qberAnalysis.level.toUpperCase()} />
+          </div>
         </Card>
       </div>
 
